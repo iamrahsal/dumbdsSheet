@@ -1,4 +1,4 @@
---------------- Docker Swarm -----------------------------------------------
+---------------- Docker Swarm -----------------------------------------------
 
 Per Raft algoroth, system can tolerate ___ failures
 (N-1)/2 -- correct 
