@@ -1,0 +1,279 @@
+------------------ Docker Swarm -----------------------------------------------
+
+Per Raft algoroth, system can tolerate ___ failures
+(N-1)/2 -- correct 
+
+Maximum number of master nodes in a swarm recommended by Docker
+7 -- correct
+
+Which of the following is not a node type in Docker Swarm?
+Scheduler node -- correct
+
+Per Raft algorith, system requires majority of ___ members to agree on values proposesd to th ecluster
+(N/2)+1 -- correct 
+
+Docker Swarm API command is used to communicate
+external client to containers -- correct 
+
+--------------------------------------------------------------------------------------------------
+
+Docker command to initialize docker swarm
+docker swarm init -- correct 
+
+Command to list the services running 
+docker service ls -- correct 
+
+command to get details on docker swarm commands
+docker swarm --help -- correct
+
+Which of the following is a valid commant to create a service
+docker service create --name service1 -d -p 80:80 tomcat -- correct 
+
+command to list the nodes currently available as part of swarm
+docker node ls -- correct 
+
+--------------------------------------------------------------------------------------------------
+
+Swarm mode has an inbuilt load balancer
+Ingress -- correct 
+
+Docker assign service a _____ for the clients to identify the service
+Virtual ip -- correct 
+
+Docker swarm command to drain a worker node 
+docker node update <worker-node> availavility=drain -- correct 
+
+Technique used by Docker Swarm mode to enable  multi-host networking
+Routing mesh -- correct 
+
+
+========================================================================================
+
+Docker Swarm command to inspect  the new swarm service created
+docker service inspect service-name -- correct
+
+In docker swarm, all communication between nodes happens throgh Trasport Layer security
+True -- correct 
+
+In docker Swarm, you can define the task and container relationship as
+one to one -- correct
+
+Swarm task status when the task is initialized
+New -- correct 
+
+Docker swarm command to activate a drain worker node
+docker node update <worker-node>--availability=active -- correct
+
+Assume a Swarm cluster has 7 swarm managers. system can tolerate ______ no. of failures
+3 -- correct
+
+Global service runs one task per worker node
+True -- correct
+
+Bridge network that connects hosts ports to container ports in overlay network
+docker gwbridge nerwork -- correct
+
+The Worker Node is responsible for container orchestration.
+False -- correct
+
+The following are valid ways to configure a pending service, except _________.
+None of the options -- correct
+
+The Docker Swarm command to scale an existing service by five instances is __________.
+docker service scale servicename=5 -- correct
+
+Swarm task is 
+unidirectional - correct
+
+Which is not a correct type of service deployments for docker swarm
+Series -- correct
+
+The following are valid ways to create a docker service, except ________.
+UCB web UI -- correct
+
+Docker swarm to command to remove a service
+docker service rm service-name -- correct
+
+_____ in the worker node executes the task on behalf of the worker node
+executor-- correct
+
+The number of tokens generated when the master node is initialized in Swarm mode is ________.
+two -- correct
+
+Docker swarm commadn to autolock swarm when initialized
+docker swarm init -- autolock -- correct
+
+When a task stops, it is not executed again, and a new task may take its place.
+True -- correct
+
+The command to list the tasks running on a service is __________.
+docker service ps <service name> -- correct
+
+Manager node can also acts as worker node
+True -- correct
+
+Docker command to list the secrets 
+docker secret ls -- correct 
+
+Maximum number of task that can be executed in Drain node
+0 --  correct
+
+The following are correct with respect to the output of the command $docker service create --name Test --secret secret1 redis, except _______.
+create a redis image for a service -- correct
+
+The Docker Swarm command to list the tasks running on the manager node is __________.
+docker node  ps self -- correct
+
+What happens to the current task when the availability of the Active node is modified as Drain Node?
+Task continues to run -- correct
+
+===============================
+-- WORKING WITH SECRETS --
+
+docker swarm init
+echo "test" | docker secret create mysecret -
+docker secret ls
+docker service create --name Redis -- secret mysecret redis
+docker service rm mysecret 
+
+
+----------------- Working with secrets
+
+#step 1
+docker swarm init
+
+#step 2
+printf "secret" | docker secret create mysecret -
+
+#step 3
+docker secret ls
+
+#step 4
+docker service create --name redis --secret mysecret redis:alpine
+
+#step 5
+skip
+
+#step 6
+docker service rm redis
+docker secret rm mysecret 
+
+
+------------------------------------------------------------------------------------------------
+
+----------------------- Create an overlay network
+
+#step 1
+Host1:
+docker swarm init
+
+#step 2 
+paste on Host 2: docker swarm join --token......172.17.0.9:2377		(output init)
+
+
+All on Host 1:
+#step 3
+docker network create -d overlay app1-network
+#step 4
+docker network ls
+#step 5
+docker service create --name redis --network app1-network redis:alpine
+#step 6
+skip
+
+
+
+------------------------------------------------------------------------------------------------
+############################################################
+####Swarm - Commands
+SKIP ALL STEPS
+
+
+
+------------------------------------------------------------------------------------------------
+############################################################
+####Enable Manteinance Mode for Swarm Mode
+SKIP ALL STEPS
+
+
+
+------------------------------------------------------------------------------------------------
+############################################################
+####Apply rolling To A Service
+SKIP ALL STEPS
+
+
+
+------------------------------------------------------------------------------------------------
+############################################################
+####Load Balancing & Service Discovery
+
+#step 1
+Host1:
+docker swarm init
+
+Join as a worker
+paste on Host 2: 
+docker swarm join --token......172.17.0.9:2377		(output init)
+
+#Skip all steps
+
+
+
+
+------------------------------------------------------------------------------------------------
+############################################################
+####Docker Swarm - A Recap
+
+#step 1
+Host1:
+docker swarm init
+
+#step 2
+Join as a worker
+paste on Host 2: 
+docker swarm join --token......172.17.0.9:2377		(output init)
+
+#All on Host 1:
+#step 3
+docker service create --replicas 4 -p 80:80 --name web nginx
+docker service ls
+
+#step 4
+docker service scale web=7
+docker service ps web
+
+
+#step 5
+#NO EXECUTE# docker node update --availability drain worker1
+#NO EXECUTE# docker node update --availability drain host01
+docker node ls
+######OUTPUT#:
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS
+r37qjum9q8990ctz7c9ooadxg *   host01              Ready               Active              Leader
+z824uxqpgn7if27zsjfwh2pgt     host01              Ready               Active                              <---this is the 'hostworker'
+
+docker node update --availability drain 'hostWorker'
+docker node update --availability drain 'z824uxqpgn7if27zsjfwh2pgt'
+
+#stp 6 
+docker node update --availability active 'z824uxqpgn7if27zsjfwh2pgt'
+
+#stp 7 
+docker network create -d overlay testnw
+
+#stp 8 
+skip
+
+#stp 9  
+docker service create --name redis redis:3.0.6
+docker service create --mode global --name redis2 redis:3.0.6
+
+#stp 10
+docker node ls
+z824uxqpgn7if27zsjfwh2pgt
+docker node update --label-add color=red 'hostWorker'
+docker node update --label-add color=red 'z824uxqpgn7if27zsjfwh2pgt'
+
+#Step 11-12-13
+ skip, skip, skip
